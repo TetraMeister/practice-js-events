@@ -13,14 +13,21 @@ const pLi = document.querySelectorAll("p");
 
 pLi.forEach(function (e) {
     e.addEventListener("click", function (ev) {
-        if (ev.target.hasAttribute("data-id")) {
-            if (stats.paragraphs[ev.target.dataset.id] === undefined) { stats.paragraphs[ev.target.dataset.id] = 0; }
-            stats.paragraphs[ev.target.dataset.id] += 1;
-        } else if (ev.target.getAttribute('href') === '/dolor.html') {
-            stats.links['/dolor.html'] += 1;
+        ev.preventDefault()
+
+        if (ev.target.hasAttribute('data-id')) {
+            const id = ev.target.dataset.id;
+            incrementCounter('paragraphs', id);
+        } else if (ev.target.hasAttribute('href')) {
+            const link = new URL(ev.target.href).pathname;
+            incrementCounter('links', link);
         };
     });
 });
+
+function incrementCounter(element, key) {
+    stats[element][key] = (stats[element][key] || 0) + 1;
+};
 
 /* nie modyfikuj kodu poniżej, ale przeanalizuj go */
 
